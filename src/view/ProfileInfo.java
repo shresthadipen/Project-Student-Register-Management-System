@@ -7,11 +7,25 @@ import dto.StudentDto;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
-import java.util.Collections;
-import java.util.List;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.net.URL;
 
 public class ProfileInfo extends JFrame {
     StudentController studentController = new StudentController();
+    JLabel profileNameLabelAnswer = new JLabel();
+    JLabel profilePhoneLabelAnswer = new JLabel();
+    JLabel profileDobLabelAnswer = new JLabel();
+    JLabel profileGenderLabelAnswer = new JLabel();
+    JLabel profileFatherNameLabelAnswer = new JLabel();
+    JLabel profileMotherNameLabelAnswer = new JLabel();
+    JLabel profileNationalityLabelAnswer = new JLabel();
+    JLabel profileAddressLabelAnswer = new JLabel();
+    JLabel profileStudentIDLabelAnswer = new JLabel();
+    JLabel profileDepartmentLabelAnswer = new JLabel();
+    JLabel profileSemesterLabelAnswer = new JLabel();
+    JLabel profileEmailLabelAnswer = new JLabel();
+    JLabel profileAttendanceLabelAnswer = new JLabel("99%");
 
     public void profileInfo() {
         setTitle("Profile");
@@ -43,24 +57,17 @@ public class ProfileInfo extends JFrame {
         JLabel profileEmailLabel = new JLabel("Email :");
         JLabel profileAttendanceLabel = new JLabel("Attendance percentage :");
 
-
-        JLabel profileNameLabelAnswer = new JLabel();
-        JLabel profilePhoneLabelAnswer = new JLabel();
-        JLabel profileDobLabelAnswer = new JLabel();
-        JLabel profileGenderLabelAnswer = new JLabel();
-        JLabel profileFatherNameLabelAnswer = new JLabel();
-        JLabel profileMotherNameLabelAnswer = new JLabel();
-        JLabel profileNationalityLabelAnswer = new JLabel();
-        JLabel profileAddressLabelAnswer = new JLabel();
-        JLabel profileStudentIDLabelAnswer = new JLabel();
-        JLabel profileDepartmentLabelAnswer = new JLabel();
-        JLabel profileSemesterLabelAnswer = new JLabel();
-        JLabel profileEmailLabelAnswer = new JLabel();
-        JLabel profileAttendanceLabelAnswer = new JLabel("99%");
-
         JPanel profilePicturePanel = new JPanel();
         profilePicturePanel.setBounds(620, 150, 140, 130);
-        profilePicturePanel.setBackground(Color.BLACK);
+
+        URL imgUrl = getClass().getClassLoader().getResource("profileIcon.png");
+        if (imgUrl != null) {
+            ImageIcon profileIcon = new ImageIcon(imgUrl);
+            JLabel profilePictureLabel = new JLabel(profileIcon);
+            profilePicturePanel.add(profilePictureLabel, BorderLayout.CENTER);
+        } else {
+            System.err.println("Image not found!");
+        }
 
         JPanel infoBoxPanel = new JPanel();
         infoBoxPanel.setBounds(150, 350, 1050, 280);
@@ -187,6 +194,42 @@ public class ProfileInfo extends JFrame {
         add(editBtn);
         setLayout(null);
         setVisible(true);
+
+        StudentUpdate studentUpdate = new StudentUpdate();
+        backBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                StudentDetails studentDetails = new StudentDetails();
+                studentDetails.studentDetail();
+                dispose();
+            }
+        });
+
+        editBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String studentId = profileStudentIDLabelAnswer.getText();
+                StudentDto studentDto = studentController.getStudentById(Integer.valueOf(studentId));
+                studentUpdate.updateStudent(studentDto);
+                studentUpdate.studentUpdate();
+                dispose();
+            }
+        });
+
     }
 
+    public void updateProfileInfo(StudentDto studentDto) {
+        profileNameLabelAnswer.setText(studentDto.getFullName());
+        profilePhoneLabelAnswer.setText(studentDto.getPhoneNumber());
+        profileDobLabelAnswer.setText(studentDto.getDob());
+        profileGenderLabelAnswer.setText(studentDto.getGender());
+        profileFatherNameLabelAnswer.setText(studentDto.getFatherName());
+        profileMotherNameLabelAnswer.setText(studentDto.getMotherName());
+        profileNationalityLabelAnswer.setText(studentDto.getNationality());
+        profileAddressLabelAnswer.setText(studentDto.getAddress());
+        profileStudentIDLabelAnswer.setText(String.valueOf(studentDto.getId()));
+        profileDepartmentLabelAnswer.setText(studentDto.getDepartment());
+        profileSemesterLabelAnswer.setText(studentDto.getSemester());
+        profileEmailLabelAnswer.setText(studentDto.getEmail());
+    }
 }

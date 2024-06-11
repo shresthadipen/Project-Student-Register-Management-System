@@ -97,9 +97,11 @@ public class StudentModel {
 
     public void hardDeleteStudent(Integer studentId) {
         try {
-            String query = "Delete student_info where id = ? ";
-            PreparedStatement preparedStatement = connection.getConnection().prepareStatement(query);
-            preparedStatement.execute();
+            String query = "Delete from student_info where id = ? ";
+            try (PreparedStatement preparedStatement = connection.getConnection().prepareStatement(query)) {
+                preparedStatement.setInt(1, studentId);
+                preparedStatement.execute();
+            }
             System.out.println("Data deleted");
         } catch (Exception e) {
             e.printStackTrace();
@@ -110,7 +112,7 @@ public class StudentModel {
         try {
             String query = "SELECT * from student_info where id = ?";
             PreparedStatement preparedStatement = connection.getConnection().prepareStatement(query);
-            preparedStatement.setInt(1,studentId);
+            preparedStatement.setInt(1, studentId);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 int stdId = resultSet.getInt("Id");
@@ -125,14 +127,6 @@ public class StudentModel {
                 String email = resultSet.getString("email");
                 String department = resultSet.getString("department");
                 String semester = resultSet.getString("semester");
-
-                System.out.println("ID: " + stdId);
-                System.out.println("Full Name: " + name);
-                System.out.println("Phone Number: " + phoneNumber);
-                System.out.println("DOB: " + dob);
-                System.out.println("Gender: " + gender);
-                System.out.println("Address: " + address);
-                System.out.println("Data Displayed");
 
                 StudentDto studentDto = new StudentDto();
                 studentDto.setId(stdId);
@@ -156,8 +150,30 @@ public class StudentModel {
         return null;
     }
 
-    public static void main(String[] args) {
-        StudentModel studentModel = new StudentModel();
-        studentModel.getStudentById(15);
+    public StudentDto updateStudentById(Integer studentId, StudentDto studentDto) {
+        try {
+            String query = "UPDATE student_info set full_name = ?,phone_number = ?,dob = ?,gender = ?,father_name = ?," +
+                    "mother_name = ?,nationality = ?,address = ?,email = ?,department = ?,semester = ?,status = ? where id = ? ";
+            PreparedStatement preparedStatement = connection.getConnection().prepareStatement(query);
+            preparedStatement.setString(1, studentDto.getFullName());
+            preparedStatement.setString(2, studentDto.getPhoneNumber());
+            preparedStatement.setString(3, studentDto.getDob());
+            preparedStatement.setString(4, studentDto.getGender());
+            preparedStatement.setString(5, studentDto.getFatherName());
+            preparedStatement.setString(6, studentDto.getMotherName());
+            preparedStatement.setString(7, studentDto.getNationality());
+            preparedStatement.setString(8, studentDto.getAddress());
+            preparedStatement.setString(9, studentDto.getEmail());
+            preparedStatement.setString(10, studentDto.getDepartment());
+            preparedStatement.setString(11, studentDto.getSemester());
+            preparedStatement.setString(12, String.valueOf(studentDto.getStudentStatus()));
+            preparedStatement.setInt(13, studentId);
+            preparedStatement.execute();
+            System.out.println("Data updated");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
+
 }

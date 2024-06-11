@@ -2,13 +2,11 @@ package view;
 
 import controller.StudentController;
 import dto.StudentDto;
-import model.StudentModel;
-import service.StudentService;
-import service.StudentServiceImpl;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,6 +16,7 @@ import java.util.List;
 
 public class StudentDetails extends JFrame {
     StudentController studentController = new StudentController();
+
     public void studentDetail() {
         setTitle("Student Details");
         setSize(1370, 730);
@@ -42,7 +41,6 @@ public class StudentDetails extends JFrame {
         JButton addStudentBtn = new JButton("Add");
         addStudentBtn.setForeground(Color.WHITE);
         addStudentBtn.setBackground(Color.darkGray);
-
 
 
         searchBar.setBounds(900, 15, 220, 30);
@@ -97,51 +95,89 @@ public class StudentDetails extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 StudentAdd sa = new StudentAdd();
                 sa.studentAdd();
+                dispose();
             }
         });
 
-        table.addMouseListener(new MouseListener(){
+        searchBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String str = searchBar.getText();
+                DefaultTableModel tableModel1 = (DefaultTableModel) table.getModel();
+                TableRowSorter<DefaultTableModel> tableRowSorter = new TableRowSorter<>(tableModel1);
+                table.setRowSorter(tableRowSorter);
+                tableRowSorter.setRowFilter(RowFilter.regexFilter(str));
+            }
+        });
 
+        ProfileInfo profileInfo = new ProfileInfo();
+
+        table.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 int row = table.getSelectedRow();
                 int column = table.getSelectedColumn();
                 if (row != -1 && column == 6) {
                     String studentId = table.getModel().getValueAt(row, 1).toString();
-                    System.out.println(studentId);
-                    studentController.getStudentById(Integer.valueOf(studentId));
-                    ProfileInfo profileInfo = new ProfileInfo();
+                    StudentDto studentDto = studentController.getStudentById(Integer.valueOf(studentId));
+                    profileInfo.updateProfileInfo(studentDto);
+                    profileInfo.profileInfo();
+                    dispose();
+                }
+                if (row != -1 && column == 7) {
+                    String studentId = table.getModel().getValueAt(row, 1).toString();
+                    String studentName = table.getModel().getValueAt(row, 2).toString();  // Get the student's name
+
+                    int response = JOptionPane.showConfirmDialog(
+                            null,  "Do you want to delete " + studentName + " details ?", "Confirm",
+                            JOptionPane.YES_NO_OPTION,
+                            JOptionPane.QUESTION_MESSAGE
+                    );
+
+                    if (response == JOptionPane.YES_OPTION) {
+                        studentController.hardDeleteStudent(Integer.valueOf(studentId));
+                        StudentDetails studentDetails = new StudentDetails();
+                        studentDetails.studentDetail();
+                        dispose();
+
+
+                    }
                 }
             }
 
             @Override
-            public void mousePressed(MouseEvent e) {}
+            public void mousePressed(MouseEvent e) {
+            }
+
             @Override
-            public void mouseReleased(MouseEvent e) {}
+            public void mouseReleased(MouseEvent e) {
+            }
+
             @Override
-            public void mouseEntered(MouseEvent e) {}
+            public void mouseEntered(MouseEvent e) {
+            }
+
             @Override
-            public void mouseExited(MouseEvent e) {}
+            public void mouseExited(MouseEvent e) {
+            }
         });
     }
-    public static void main(String[] args) {
-        StudentDetails student = new StudentDetails();
-        student.studentDetail();
-    }
 
-    public static DefaultTableModel getStudentTableModel (List<StudentDto> allStudent) {
-        String[] column = {"S.N","Student ID", "Name", "Department", "Semester", "Status","Action"};
-        Object[][] data = new Object[allStudent.size()][7];
+
+    public static DefaultTableModel getStudentTableModel(List<StudentDto> allStudent) {
+        String[] column = {"S.N", "Student ID", "Name", "Department", "Semester", "Status", "Action", "Delete"};
+        Object[][] data = new Object[allStudent.size()][8];
 
         for (int i = 0; i < allStudent.size(); i++) {
             StudentDto studentDto = allStudent.get(i);
-            data[i][0] = i+1;
+            data[i][0] = i + 1;
             data[i][1] = studentDto.getId();
             data[i][2] = studentDto.getFullName();
             data[i][3] = studentDto.getDepartment();
             data[i][4] = studentDto.getSemester();
             data[i][5] = studentDto.getStudentStatus();
             data[i][6] = "View Detail";
+            data[i][7] = "Delete";
 
         }
         return new DefaultTableModel(data, column);

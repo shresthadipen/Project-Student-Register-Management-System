@@ -37,8 +37,13 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public StudentDto getStudentById(Integer studentId) {
-        System.out.println("StudentService ID =" + studentId);
         return studentModel.getStudentById(studentId);
+    }
+
+    @Override
+    public StudentDto updateStudent(Integer studentId, StudentDto studentDto) {
+        studentDto.setStudentStatus(StudentStatus.ACTIVE);
+        return studentModel.updateStudentById(studentId, studentDto);
     }
 
 }

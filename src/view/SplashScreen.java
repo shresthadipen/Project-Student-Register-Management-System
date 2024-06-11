@@ -26,7 +26,7 @@ public class SplashScreen extends JFrame {
         add(panel);
         setVisible(true);
         try {
-            Thread.sleep(3000);
+            Thread.sleep(4000);
             setVisible(false);
             StudentDetails sd = new StudentDetails();
             sd.studentDetail();
@@ -38,8 +38,8 @@ public class SplashScreen extends JFrame {
     public static void main(String[] args) {
         SplashScreen ss = new SplashScreen();
         ss.splash();
-
     }
+
 }
     
 

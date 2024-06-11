@@ -10,12 +10,6 @@ public class StudentController {
     StudentService studentService = new StudentServiceImpl();
 
     public void createStudent(StudentDto studentDto) {
-        System.out.println(studentDto.getId());
-        System.out.println(studentDto.getAddress());
-        System.out.println(studentDto.getFullName());
-        System.out.println(studentDto.getMotherName());
-        System.out.println(studentDto.getNationality());
-        System.out.println(studentDto.getStudentStatus());
         studentService.createStudent(studentDto);
 
     }
@@ -26,9 +20,12 @@ public class StudentController {
     }
 
 
-    public StudentDto getStudentById(Integer studentId){
-        System.out.println("StudentController ID = " + studentId);
+    public StudentDto getStudentById(Integer studentId) {
         return studentService.getStudentById(studentId);
+    }
+
+    public StudentDto updateStudent(Integer studentId, StudentDto studentDto) {
+        return studentService.updateStudent(studentId, studentDto);
     }
 
     public void disableStudent(Integer studentId) {

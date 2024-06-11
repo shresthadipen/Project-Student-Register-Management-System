@@ -3,23 +3,38 @@ package view;
 import controller.StudentController;
 import dto.StudentDto;
 
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class StudentAdd extends JFrame {
+public class StudentUpdate extends JFrame {
     StudentController studentController = new StudentController();
+    JTextField nameTextField = new JTextField(20);
+    JTextField phoneTextField = new JTextField(20);
+    JTextField dobTextField = new JTextField(20);
+    JTextField fatherNameTextField = new JTextField(20);
+    JTextField motherNameTextField = new JTextField(20);
+    JTextField nationalityTextField = new JTextField(20);
+    JTextField addressTextField = new JTextField(20);
+    JTextField emailTextField = new JTextField(20);
+    JTextField departmentTextField = new JTextField(20);
+    JTextField semesterTextField = new JTextField(20);
+    JLabel studentIdAnswer = new JLabel();
 
-    public void studentAdd() {
 
-        setTitle("Add Student");
+    JRadioButton genderMaleRadioBtn = new JRadioButton("Male");
+    JRadioButton genderFemaleRadioBtn = new JRadioButton("Female");
+    JRadioButton genderOthersRadioBtn = new JRadioButton("Others");
+
+    public void studentUpdate() {
+
+        setTitle("Update Student");
         setSize(1370, 730);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
 
-        JLabel addStudent = new JLabel("Add Student");
+        JLabel updateStudent = new JLabel("Update Student");
         JLabel nameLabel = new JLabel("Full Name :");
         JLabel phoneLabel = new JLabel("Phone Number :");
         JLabel dobLabel = new JLabel("Dob :");
@@ -31,39 +46,16 @@ public class StudentAdd extends JFrame {
         JLabel emailLabel = new JLabel("Email :");
         JLabel departmentLabel = new JLabel("Department :");
         JLabel semesterLabel = new JLabel("Semester :");
-        JLabel addPhotoLabel = new JLabel("Add Photo :");
+        JLabel studentId = new JLabel("Student Id : ");
 
 
-        JButton addPhotoBrowseBtn = new JButton("Browse");
-        addPhotoBrowseBtn.setForeground(Color.WHITE);
-        addPhotoBrowseBtn.setBackground(Color.DARK_GRAY);
-        JButton addStudentBtn = new JButton("Add");
-        addStudentBtn.setForeground(Color.WHITE);
-        addStudentBtn.setBackground(Color.DARK_GRAY);
+        JButton updateStudentBtn = new JButton("Update");
+        updateStudentBtn.setForeground(Color.WHITE);
+        updateStudentBtn.setBackground(Color.DARK_GRAY);
         JButton cancelBtn = new JButton("Cancel");
         cancelBtn.setForeground(Color.WHITE);
         cancelBtn.setBackground(Color.DARK_GRAY);
 
-        JTextField nameTextField = new JTextField(20);
-        JTextField phoneTextField = new JTextField(20);
-        JTextField dobTextField = new JTextField(20);
-        JTextField fatherNameTextField = new JTextField(20);
-        JTextField motherNameTextField = new JTextField(20);
-        JTextField nationalityTextField = new JTextField(20);
-        JTextField addressTextField = new JTextField(20);
-        JTextField emailTextField = new JTextField(20);
-        JTextField departmentTextField = new JTextField(20);
-        JTextField semesterTextField = new JTextField(20);
-
-
-        JRadioButton genderMaleRadioBtn = new JRadioButton("Male");
-        JRadioButton genderFemaleRadioBtn = new JRadioButton("Female");
-        JRadioButton genderOthersRadioBtn = new JRadioButton("Others");
-
-        ButtonGroup group = new ButtonGroup();
-        group.add(genderMaleRadioBtn);
-        group.add(genderFemaleRadioBtn);
-        group.add(genderOthersRadioBtn);
 
         Font font = new Font("Arial", Font.PLAIN, 13);
         Font fontBold = new Font("Arial", Font.BOLD, 13);
@@ -78,9 +70,9 @@ public class StudentAdd extends JFrame {
         emailLabel.setFont(font);
         departmentLabel.setFont(font);
         semesterLabel.setFont(font);
-        addPhotoLabel.setFont(font);
-        addPhotoBrowseBtn.setFont(fontBold);
-        addStudentBtn.setFont(fontBold);
+        studentId.setFont(font);
+        studentIdAnswer.setFont(fontBold);
+        updateStudentBtn.setFont(fontBold);
         genderFemaleRadioBtn.setFont(font);
         genderMaleRadioBtn.setFont(font);
         genderOthersRadioBtn.setFont(font);
@@ -96,8 +88,13 @@ public class StudentAdd extends JFrame {
         departmentTextField.setToolTipText("Enter Department");
         semesterTextField.setToolTipText("Enter Semester");
 
-        addStudent.setFont(new Font("Arial", Font.BOLD, 25));
-        addStudent.setBounds(130, 100, 300, 40);
+        ButtonGroup group = new ButtonGroup();
+        group.add(genderMaleRadioBtn);
+        group.add(genderFemaleRadioBtn);
+        group.add(genderOthersRadioBtn);
+
+        updateStudent.setFont(new Font("Arial", Font.BOLD, 25));
+        updateStudent.setBounds(130, 100, 300, 40);
 
         nameLabel.setBounds(130, 150, 130, 30);
         nameTextField.setBounds(270, 150, 150, 30);
@@ -134,14 +131,14 @@ public class StudentAdd extends JFrame {
         semesterLabel.setBounds(850, 220, 130, 30);
         semesterTextField.setBounds(990, 220, 150, 30);
 
-        addPhotoLabel.setBounds(850, 308, 130, 30);
-        addPhotoBrowseBtn.setBounds(990, 265, 150, 115);
+        studentId.setBounds(850, 255, 130, 30);
+        studentIdAnswer.setBounds(990, 255, 150, 30);
 
-        addStudentBtn.setBounds(850, 395, 290, 30);
+        updateStudentBtn.setBounds(850, 395, 290, 30);
 
         cancelBtn.setBounds(1060, 500, 80, 30);
 
-        add(addStudent);
+        add(updateStudent);
         add(nameLabel);
         add(nameTextField);
         add(phoneLabel);
@@ -166,17 +163,15 @@ public class StudentAdd extends JFrame {
         add(departmentTextField);
         add(semesterLabel);
         add(semesterTextField);
-        add(addPhotoLabel);
-        add(addPhotoBrowseBtn);
-        add(addStudentBtn);
+        add(studentId);
+        add(studentIdAnswer);
+        add(updateStudentBtn);
         add(cancelBtn);
-//        add(panel);
-
         setLayout(null);
         setVisible(true);
 
 
-        addStudentBtn.addActionListener(new ActionListener() {
+        updateStudentBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String fullName = nameTextField.getText();
                 String phoneNumber = phoneTextField.getText();
@@ -190,6 +185,7 @@ public class StudentAdd extends JFrame {
                 String email = emailTextField.getText();
                 String department = departmentTextField.getText();
                 String semester = semesterTextField.getText();
+                Integer studentId = Integer.valueOf(studentIdAnswer.getText());
 
                 StudentDto studentDto = new StudentDto();
                 studentDto.setFullName(fullName);
@@ -204,19 +200,40 @@ public class StudentAdd extends JFrame {
                 studentDto.setDepartment(department);
                 studentDto.setSemester(semester);
 
-                studentController.createStudent(studentDto);
-                StudentDetails studentDetails = new StudentDetails();
-                studentDetails.studentDetail();
+                studentController.updateStudent(studentId, studentDto);
+                studentDto = studentController.getStudentById(Integer.valueOf(studentId));
+                ProfileInfo profileInfo = new ProfileInfo();
+                profileInfo.updateProfileInfo(studentDto);
+                profileInfo.profileInfo();
                 dispose();
             }
         });
 
         cancelBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                StudentDetails studentDetails = new StudentDetails();
-                studentDetails.studentDetail();
+                String studentId = studentIdAnswer.getText();
+                StudentDto studentDto = studentController.getStudentById(Integer.valueOf(studentId));
+                ProfileInfo profileInfo = new ProfileInfo();
+                profileInfo.updateProfileInfo(studentDto);
+                profileInfo.profileInfo();
                 dispose();
             }
+
         });
+    }
+
+
+    public void updateStudent(StudentDto studentDto) {
+        nameTextField.setText(studentDto.getFullName());
+        phoneTextField.setText(studentDto.getPhoneNumber());
+        dobTextField.setText(studentDto.getDob());
+        fatherNameTextField.setText(studentDto.getFatherName());
+        motherNameTextField.setText(studentDto.getMotherName());
+        nationalityTextField.setText(studentDto.getNationality());
+        addressTextField.setText(studentDto.getAddress());
+        studentIdAnswer.setText(String.valueOf(studentDto.getId()));
+        departmentTextField.setText(studentDto.getDepartment());
+        semesterTextField.setText(studentDto.getSemester());
+        emailTextField.setText(studentDto.getEmail());
     }
 }
