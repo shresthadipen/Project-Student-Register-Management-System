@@ -35,11 +35,6 @@ public class SplashScreen extends JFrame {
         }
     }
 
-    public static void main(String[] args) {
-        SplashScreen ss = new SplashScreen();
-        ss.splash();
-    }
-
 }
     
 
